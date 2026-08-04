@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── colour ─────────────────────────────────────────── */
+  --color-ink:        #0A1D2B;
+  --color-ink-soft:   #4A6072;
+  --color-tide:       #123A4F;
+  --color-beam:       #F5B851;
+  --color-signal:     #E4674E;
+  --color-glass:      #7FC6BC;
+  --color-fog:        #E9EEF0;
+  --color-fog-pure:   #F7FAFB;
+
+  /* ── type ───────────────────────────────────────────── */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body:    var(--font-newsreader), Georgia, serif;
+  --font-mono:    var(--font-plex-mono), ui-monospace, monospace;
+
+  /* ── fluid type scale (clamp: mobile → desktop) ──────── */
+  --text-eyebrow:  0.75rem;
+  --text-xs:       0.8125rem;
+  --text-sm:       0.9375rem;
+  --text-base:     1.0625rem;
+  --text-lg:       1.1875rem;
+  --text-xl:       clamp(1.375rem, 1.2rem + 0.9vw,  1.625rem);
+  --text-2xl:      clamp(1.75rem,  1.4rem + 1.6vw,  2.25rem);
+  --text-3xl:      clamp(2.25rem,  1.7rem + 2.6vw,  3rem);
+  --text-4xl:      clamp(2.75rem,  1.9rem + 4.0vw,  4rem);
+  --text-5xl:      clamp(3.25rem,  2.0rem + 6.0vw,  5.5rem);
+
+  /* ── spacing rhythm ─────────────────────────────────── */
+  --spacing-section:    clamp(4rem, 3rem + 5vw, 8rem);
+  --spacing-section-sm: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+  --spacing-gutter:     clamp(1.25rem, 0.9rem + 1.8vw, 2.5rem);
+
+  /* ── radii ──────────────────────────────────────────── */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.5rem;
+  --radius-lens: 62% 38% 55% 45% / 48% 52% 48% 52%;
+
+  /* ── shadows: warm, never neutral grey ──────────────── */
+  --shadow-lift:  0 4px 24px -6px rgb(10 29 43 / 0.24);
+  --shadow-card:  0 2px 12px -4px rgb(10 29 43 / 0.16);
+  --shadow-glow:  0 0 48px -8px rgb(245 184 81 / 0.38);
+
+  /* ── easing ─────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* ── layout ─────────────────────────────────────────── */
+  --container-max: 1440px;
+  --measure:       68ch;
+}
+
+/* ── timing tokens (CSS custom properties, not Tailwind) ── */
+:root {
+  --dur-instant: 120ms;
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 520ms;
+  --dur-story: 900ms;
+}
+
+/* ── base layer ───────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-ink);
+    color: var(--color-fog);
+    line-height: 1.65;
+  }
+
+  ::selection {
+    background-color: rgb(245 184 81 / 0.3);
+    color: var(--color-fog-pure);
+  }
+
+  /* Focus ring — amber accent, visible on both surfaces */
+  :focus-visible {
+    outline: 2px solid var(--color-beam);
+    outline-offset: 2px;
+  }
+
+  /* Skip link styles */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-beam);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: var(--radius-sm);
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Noise texture utility */
+  .noise {
+    position: relative;
+  }
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  /* Heading defaults */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  /* Article typography */
+  .prose-article p {
+    text-wrap: pretty;
+    hanging-punctuation: first last;
+  }
+
+  /* Tabular numbers for stats */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Surface variants via data attribute */
+  [data-surface="dark"] {
+    background-color: var(--color-ink);
+    color: var(--color-fog);
+  }
+
+  [data-surface="light"] {
+    background-color: var(--color-fog);
+    color: var(--color-ink);
+  }
+}
+
+/* ── reduced motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ── view transitions ─────────────────────────────────── */
+::view-transition-old(root) {
+  animation: fade-out 180ms var(--ease-out-expo) both;
+}
+::view-transition-new(root) {
+  animation: fade-in 320ms var(--ease-out-expo) both;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* ── The Beam (Hero) ──────────────────────────────────── */
+@keyframes sweep {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Marquee ──────────────────────────────────────────── */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ── Scroll cue bob ───────────────────────────────────── */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Section divider hairline ─────────────────────────── */
+.section-divider {
+  height: 1px;
+  width: 100%;
+}
+[data-surface="dark"] .section-divider {
+  background-color: rgb(245 184 81 / 0.15);
+}
+[data-surface="light"] .section-divider {
+  background-color: rgb(10 29 43 / 0.1);
+}
+
+/* ── Article drop cap ─────────────────────────────────── */
+.prose-article > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.5em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: var(--color-beam);
+  font-weight: 600;
+}
+
+/* ── Custom HR (three dots) ───────────────────────────── */
+.prose-article hr {
+  border: none;
+  text-align: center;
+  margin: 2rem 0;
+}
+.prose-article hr::after {
+  content: "• • •";
+  color: var(--color-beam);
+  letter-spacing: 8px;
+  font-size: 0.75rem;
+}
+
+/* ── Card spotlight CSS (Beam use #3) ─────────────────── */
+.post-grid {
+  --mx: 50%;
+  --my: 50%;
+}
+.post-card {
+  position: relative;
+}
+.post-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    280px circle at var(--mx) var(--my),
+    rgb(245 184 81 / 0.10),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out-expo);
+  pointer-events: none;
+  z-index: 1;
+}
+.post-grid:hover .post-card::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-grid:hover .post-card::before {
+    opacity: 0;
+  }
+}
+
+/* ── Scrollbar styling ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-tide);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-soft);
+}
