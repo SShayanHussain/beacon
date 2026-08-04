@@ -4,7 +4,7 @@ import matter from 'gray-matter'
 import { ServiceFrontmatterSchema } from '@/lib/schemas'
 import type { ServiceFrontmatter } from '@/lib/schemas'
 
-const CONTENT_DIR = path.join(process.cwd(), '..', 'content', 'services')
+const CONTENT_DIR = path.join(process.cwd(), 'content', 'services')
 
 export type ServiceMeta = {
   slug: string

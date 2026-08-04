@@ -5,7 +5,8 @@ import readingTime from 'reading-time'
 import { PostFrontmatterSchema, CATEGORIES, type Category } from '@/lib/schemas'
 import type { PostMeta, Heading } from '@/types'
 
-const CONTENT_DIR = path.join(process.cwd(), '..', 'content', 'blog')
+const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog')
+const AUTHORS_DIR = path.join(process.cwd(), 'content', 'authors')
 const POSTS_PER_PAGE = 9
 
 function getPostFilePaths(): string[] {

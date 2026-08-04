@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const fileName = LEGAL_SLUGS[legalSlug]
   if (!fileName) return {}
 
-  const filePath = path.join(process.cwd(), '..', 'content', 'legal', `${fileName}.mdx`)
+  const filePath = path.join(process.cwd(), 'content', 'legal', `${fileName}.mdx`)
   if (!fs.existsSync(filePath)) return {}
 
   const source = fs.readFileSync(filePath, 'utf-8')
@@ -43,7 +43,7 @@ export default async function LegalPage({ params }: PageProps) {
   
   if (!fileName) notFound()
 
-  const filePath = path.join(process.cwd(), '..', 'content', 'legal', `${fileName}.mdx`)
+  const filePath = path.join(process.cwd(), 'content', 'legal', `${fileName}.mdx`)
   if (!fs.existsSync(filePath)) notFound()
 
   const source = fs.readFileSync(filePath, 'utf-8')
