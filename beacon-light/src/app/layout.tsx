@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     'max-image-preview': 'large' as const,
     'max-snippet': -1,
   },
+  icons: {
+    icon: '/favicon.ico',
+  },
   alternates: { canonical: '/' },
 }
 
